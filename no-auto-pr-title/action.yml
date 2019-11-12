@@ -1,0 +1,9 @@
+name: No Auto PR Title
+description: Reject auto PR title
+author: tyok
+branding:
+  icon: git-branch
+  color: red
+runs:
+  using: 'node12'
+  main: 'index.js'
