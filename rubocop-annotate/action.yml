@@ -9,9 +9,6 @@ inputs:
     required: false
     description: path to RuboCop results JSON file
     default: rubocop.json
-  defaultLevel:
-    required: true
-    description: default annotation level
   levels:
     required: true
     description: mapping from rubocop severity to annotation level

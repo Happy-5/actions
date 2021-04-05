@@ -5,14 +5,13 @@ const path = require("path");
 const fs = require("fs");
 
 try {
-  const defaultAnnotationLevel = core.getInput("defaultLevel");
   const annotationLevel = JSON.parse(core.getInput("levels"));
   const fullPath = path.resolve(core.getInput("path"));
   const json = JSON.parse(fs.readFileSync(fullPath, "utf8"));
 
   for (const file of json.files) {
     for (const offense of file.offenses) {
-      const level = annotationLevel[offense.severity] || defaultAnnotationLevel;
+      const level = annotationLevel[offense.severity];
       const properties = {
         file: file.path,
         col: offense.location.column,
