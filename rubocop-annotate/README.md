@@ -24,10 +24,12 @@ jobs:
       - uses: duderman/rubocop-annotate-action@v0.1.0
         with:
           path: rubocop.json
-          defaultLevel: warning
-          levels:
-            info: notice
-            refactor: warning
-            convention: warning
+          defaultLevel: error
+          levels: |
+            {
+              info: "notice",
+              refactor: "warning",
+              convention: "warning",
+            }
         if: ${{ always() }}
 ```

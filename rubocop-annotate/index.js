@@ -7,7 +7,7 @@ const fs = require("fs");
 
 try {
   const defaultAnnotationLevel = core.getInput("defaultLevel");
-  const annotationLevel = core.getInput("levels");
+  const annotationLevel = JSON.parse(core.getInput("levels"));
   const fullPath = path.resolve(core.getInput("path"));
   const json = JSON.parse(fs.readFileSync(fullPath, "utf8"));
 
