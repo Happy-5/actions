@@ -4,7 +4,8 @@ const github = require("@actions/github");
 const path = require("path");
 const fs = require("fs");
 
-const levelPriority = { error: 0, warning: 10000, notice: 20000 };
+const levelPriority = { error: 0, warning: 1, notice: 2 };
+const duplicateCost = {};
 
 function higherLevel(level1, level2) {
   if (level1 === "error" || (level1 === "warning" && level2 === "notice")) {
@@ -12,6 +13,10 @@ function higherLevel(level1, level2) {
   } else {
     return level2;
   }
+}
+
+function sortFactor({ level, size, message }) {
+  return (levelPriority[level] * 10000) + (duplicateCost[message] * 10) - size;
 }
 
 try {
@@ -37,16 +42,16 @@ try {
         annotation.size = annotation.size + 1;
         annotation.message = annotation.message + "\n" + message;
         annotation.level = higherLevel(annotation.level, level);
+        duplicateCost[annotation.message] = duplicateCost[annotation.message] || -1 + 1;
       } else {
         annotationMap[key] = { size: 1, level, properties, message }
         annotations.push(annotationMap[key]);
+        duplicateCost[message] = duplicateCost[message] || -1 + 1;
       }
     }
   }
 
-  annotations.sort(function (a, b) {
-    return levelPriority[a.level] + a.size - levelPriority[b.level] - b.size;
-  });
+  annotations.sort((a, b) => sortFactor(a) - sortFactor(b));
 
   for (const { level, properties, message } of annotations) {
     command.issueCommand(level, properties, message);
