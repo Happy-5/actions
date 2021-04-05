@@ -1,7 +1,6 @@
 const core = require("@actions/core");
 const command = require("@actions/core/lib/command")
 const github = require("@actions/github");
-const core = require("@actions/core");
 const path = require("path");
 const fs = require("fs");
 
