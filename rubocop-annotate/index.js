@@ -10,15 +10,36 @@ try {
   const json = JSON.parse(fs.readFileSync(fullPath, "utf8"));
 
   for (const file of json.files) {
+
+    const annotations = {};
+
     for (const offense of file.offenses) {
+      const col = offense.location.column;
+      const line = offense.location.line;
+      const properties = { file: file.path, line, col };
       const level = annotationLevel[offense.severity];
-      const properties = {
-        file: file.path,
-        col: offense.location.column,
-        line: offense.location.line,
-      };
       const message = `[${offense.cop_name}] ${offense.message}`;
 
+      const key = `${file.path}:${line}`
+
+      if (annotations[key]) {
+        const annotation = annotations[key]
+
+        annotation.message = annotation.message + "\n" + message
+
+        if (annotation.level === "notice") {
+          annotation.level = level
+        } else if (annotation.level === "warning" && level !== "notice") {
+          annotation.level = level
+        }
+
+      } else {
+        annotations[key] = { level, properties, message }
+      }
+    }
+
+    for (const annotationKey in annotations) {
+      const { level, properties, message } = annotations[annotationKey];
       command.issueCommand(level, properties, message);
     }
   }
