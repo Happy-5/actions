@@ -1,0 +1,20 @@
+name: RuboCop Annotate Action
+description: GitHub Action for creating annotations from RuboCop results (forked from https://github.com/duderman/rubocop-annotate-action)
+author: tyok
+branding:
+  icon: alert-triangle
+  color: purple
+inputs:
+  path:
+    required: false
+    description: path to RuboCop results JSON file
+    default: rubocop.json
+  defaultLevel:
+    required: true
+    description: default annotation level
+  levels:
+    required: true
+    description: mapping from rubocop severity to annotation level
+runs:
+  using: node14
+  main: index.js
