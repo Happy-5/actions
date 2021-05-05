@@ -16,9 +16,7 @@ function higherLevel(level1, level2) {
 }
 
 function sortFactor({ level, size, message }) {
-  return (levelPriority[level] || 10 * 10000) \
-    + (duplicateCost[message] || 0 * 10) \
-    - size;
+  return (levelPriority[level] || 10 * 10000) + (duplicateCost[message] || 0 * 10) - size;
 }
 
 try {
