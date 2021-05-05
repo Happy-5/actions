@@ -16,7 +16,9 @@ function higherLevel(level1, level2) {
 }
 
 function sortFactor({ level, size, message }) {
-  return (levelPriority[level] * 10000) + (duplicateCost[message] * 10) - size;
+  return (levelPriority[level] || 10 * 10000) \
+    + (duplicateCost[message] || 0 * 10) \
+    - size;
 }
 
 try {
@@ -58,7 +60,7 @@ try {
   }
 
 } catch (error) {
-  if (error.code === "ENOENT") {
+  if (error.code === "ENOENT" && typeof fullPath !== 'undefined') {
     core.setFailed(`File '${fullPath}' doesn't exist`)
   } else {
     core.setFailed(error.message);
