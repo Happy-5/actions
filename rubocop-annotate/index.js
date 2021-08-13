@@ -16,7 +16,14 @@ function higherLevel(level1, level2) {
 }
 
 function sortFactor({ level, size, message }) {
-  return (levelPriority[level] || 10 * 10000) + (duplicateCost[message] || 0 * 10) - size;
+  let score = levelPriority[level] || 10 * 10000;
+  score += duplicateCost[message] || 0 * 10;
+  score -= size;
+
+  if (message.includes("RSpec/InstanceVariable")) { score += 10000; }
+  else if (message.includes("Layout/HashAlignment")) { score += 10000; }
+
+  return score;
 }
 
 try {
