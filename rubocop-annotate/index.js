@@ -20,8 +20,9 @@ function sortFactor({ level, size, message }) {
   score += duplicateCost[message] || 0 * 10;
   score -= size;
 
-  if (message.includes("RSpec/InstanceVariable")) { score += 10000; }
-  else if (message.includes("Layout/HashAlignment")) { score += 10000; }
+  if (message.startsWith("[RSpec/InstanceVariable]")) { score += 10000; }
+  else if (message.startsWith("[RSpec/ExampleLength]")) { score += 10000; }
+  else if (message.startsWith("[Layout/HashAlignment]")) { score += 10000; }
 
   return score;
 }
